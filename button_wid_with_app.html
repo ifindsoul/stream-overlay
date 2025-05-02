@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+    .buttons-container { position: absolute; right: 20px; bottom: 20px; display: flex; flex-direction: column; align-items: center; gap: 11px; }
+    .button-row { display: flex; gap: 10px; justify-content: center; }
+    .button-rect { 
+      width: 100px; 
+      height: 40px; 
+      border-radius: 25px; 
+      border: none; 
+      color: white; 
+      font-family: Arial; 
+      font-size: 16px; 
+      font-weight: bold; 
+      cursor: pointer; 
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.5); 
+      transition: transform 0.1s; 
+      background: linear-gradient(145deg, #ff0000, #ff5555); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      text-align: center; 
+      padding: 10px; 
+    }
+    .button-rect.show { background: linear-gradient(145deg, #104e8b, #1e90ff); }
+    .button-rect.winner { background: linear-gradient(145deg, #4b0082, #8a2be2); }
+    .button-rect.congrats { background: linear-gradient(145deg, #ff8c00, #ffa500); }
+    .button-rect.chat { background: linear-gradient(145deg, #ff8c00, #ffa500); }
+    .button-rect:active { transform: scale(0.95); }
+    .marquee { position: fixed; bottom: 40px; width: 100%; color: gold; font-size: 18px; text-align: center; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+  <div class="buttons-container">
+    <div class="button-row">
+      <button class="button-rect chat" onclick="toggleChat()">CHAT</button>
+    </div>
+    <div class="button-row">
+      <button class="button-rect next" onclick="handleNext()">NEXT</button>
+      <button class="button-rect show" onclick="handleMessage()">SHOW</button>
+    </div>
+    <div class="button-row">
+      <button class="button-rect winner" onclick="handleWinner()">WINNER</button>
+      <button class="button-rect congrats" onclick="triggerCongrats()">CONGRATS</button>
+    </div>
+  </div>
+  <div class="marquee" id="marquee" style="display: none;"></div>
+  <script>
+    async function handleNext() {
+      console.log("DEBUG: NEXT clicked");
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyWLp_5oNNZtHNza0l_rFuyo8QK0p2gpDeVMlS4lxNcpJEY4k7y0aCcDL4qxU50mNWLUA/exec', {
+          method: 'POST',
+          body: JSON.stringify({ function: 'handleNext' }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        console.log("DEBUG: handleNext response:", data);
+      } catch (error) {
+        console.error("DEBUG: Error in handleNext:", error);
+      }
+    }
+
+    async function handleMessage() {
+      console.log("DEBUG: SHOW clicked");
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyWLp_5oNNZtHNza0l_rFuyo8QK0p2gpDeVMlS4lxNcpJEY4k7y0aCcDL4qxU50mNWLUA/exec', {
+          method: 'POST',
+          body: JSON.stringify({ function: 'getMessage' }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        alert(data.message);
+        console.log("DEBUG: handleMessage response:", data);
+      } catch (error) {
+        console.error("DEBUG: Error in handleMessage:", error);
+      }
+    }
+
+    async function handleWinner() {
+      console.log("DEBUG: WINNER clicked");
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyWLp_5oNNZtHNza0l_rFuyo8QK0p2gpDeVMlS4lxNcpJEY4k7y0aCcDL4qxU50mNWLUA/exec', {
+          method: 'POST',
+          body: JSON.stringify({ function: 'doBingo' }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        alert("BINGO Winner: " + data.winner);
+        confetti({ particleCount: 200, spread: 100 });
+        const audio = new Audio('https://drive.google.com/uc?id=1vGKsPLwuHzvHM7eW9WPLcNPuX9eY6Zpj');
+        audio.play();
+        console.log("DEBUG: handleWinner response:", data);
+      } catch (error) {
+        console.error("DEBUG: Error in handleWinner:", error);
+      }
+    }
+
+    async function triggerCongrats() {
+      console.log("DEBUG: CONGRATS clicked");
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyWLp_5oNNZtHNza0l_rFuyo8QK0p2gpDeVMlS4lxNcpJEY4k7y0aCcDL4qxU50mNWLUA/exec', {
+          method: 'POST',
+          body: JSON.stringify({ function: 'getCongratsText' }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        const effect = "fireworks";
+        if (effect === "fireworks") confetti({ particleCount: 200, spread: 100 });
+        else if (effect === "confetti") confetti({ particleCount: 100, spread: 70 });
+        else if (effect === "stars") confetti({ particleCount: 50, spread: 50, shapes: ['star'] });
+        const marquee = document.getElementById('marquee');
+        marquee.textContent = data.message;
+        marquee.style.display = 'block';
+        setTimeout(() => marquee.style.display = 'none', 5000);
+        console.log("DEBUG: triggerCongrats response:", data);
+      } catch (error) {
+        console.error("DEBUG: Error in triggerCongrats:", error);
+      }
+    }
+
+    async function toggleChat() {
+      console.log("DEBUG: CHAT clicked");
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyWLp_5oNNZtHNza0l_rFuyo8QK0p2gpDeVMlS4lxNcpJEY4k7y0aCcDL4qxU50mNWLUA/exec', {
+          method: 'POST',
+          body: JSON.stringify({ function: 'toggleChat' }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        console.log("DEBUG: toggleChat response:", data);
+      } catch (error) {
+        console.error("DEBUG: Error in toggleChat:", error);
+      }
+    }
+  </script>
+</body>
+</html>
