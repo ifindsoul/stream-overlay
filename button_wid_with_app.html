@@ -55,10 +55,10 @@
         const response = await fetch('https://script.google.com/macros/s/AKfycbyWLp_5oNNZtHNza0l_rFuyo8QK0p2gpDeVMlS4lxNcpJEY4k7y0aCcDL4qxU50mNWLUA/exec', {
           method: 'POST',
           body: JSON.stringify({ function: 'handleNext' }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json' },
+          mode: 'no-cors'
         });
-        const data = await response.json();
-        console.log("DEBUG: handleNext response:", data);
+        console.log("DEBUG: handleNext response: Request sent (no-cors mode)");
       } catch (error) {
         console.error("DEBUG: Error in handleNext:", error);
       }
@@ -70,11 +70,10 @@
         const response = await fetch('https://script.google.com/macros/s/AKfycbyWLp_5oNNZtHNza0l_rFuyo8QK0p2gpDeVMlS4lxNcpJEY4k7y0aCcDL4qxU50mNWLUA/exec', {
           method: 'POST',
           body: JSON.stringify({ function: 'getMessage' }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json' },
+          mode: 'no-cors'
         });
-        const data = await response.json();
-        alert(data.message);
-        console.log("DEBUG: handleMessage response:", data);
+        console.log("DEBUG: handleMessage response: Request sent (no-cors mode)");
       } catch (error) {
         console.error("DEBUG: Error in handleMessage:", error);
       }
@@ -86,14 +85,13 @@
         const response = await fetch('https://script.google.com/macros/s/AKfycbyWLp_5oNNZtHNza0l_rFuyo8QK0p2gpDeVMlS4lxNcpJEY4k7y0aCcDL4qxU50mNWLUA/exec', {
           method: 'POST',
           body: JSON.stringify({ function: 'doBingo' }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json' },
+          mode: 'no-cors'
         });
-        const data = await response.json();
-        alert("BINGO Winner: " + data.winner);
+        console.log("DEBUG: handleWinner response: Request sent (no-cors mode)");
         confetti({ particleCount: 200, spread: 100 });
         const audio = new Audio('https://drive.google.com/uc?id=1vGKsPLwuHzvHM7eW9WPLcNPuX9eY6Zpj');
         audio.play();
-        console.log("DEBUG: handleWinner response:", data);
       } catch (error) {
         console.error("DEBUG: Error in handleWinner:", error);
       }
@@ -105,18 +103,18 @@
         const response = await fetch('https://script.google.com/macros/s/AKfycbyWLp_5oNNZtHNza0l_rFuyo8QK0p2gpDeVMlS4lxNcpJEY4k7y0aCcDL4qxU50mNWLUA/exec', {
           method: 'POST',
           body: JSON.stringify({ function: 'getCongratsText' }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json' },
+          mode: 'no-cors'
         });
-        const data = await response.json();
+        console.log("DEBUG: triggerCongrats response: Request sent (no-cors mode)");
         const effect = "fireworks";
         if (effect === "fireworks") confetti({ particleCount: 200, spread: 100 });
         else if (effect === "confetti") confetti({ particleCount: 100, spread: 70 });
         else if (effect === "stars") confetti({ particleCount: 50, spread: 50, shapes: ['star'] });
         const marquee = document.getElementById('marquee');
-        marquee.textContent = data.message;
+        marquee.textContent = "Congrats!"; // Placeholder, as no-cors limits response
         marquee.style.display = 'block';
         setTimeout(() => marquee.style.display = 'none', 5000);
-        console.log("DEBUG: triggerCongrats response:", data);
       } catch (error) {
         console.error("DEBUG: Error in triggerCongrats:", error);
       }
@@ -128,10 +126,10 @@
         const response = await fetch('https://script.google.com/macros/s/AKfycbyWLp_5oNNZtHNza0l_rFuyo8QK0p2gpDeVMlS4lxNcpJEY4k7y0aCcDL4qxU50mNWLUA/exec', {
           method: 'POST',
           body: JSON.stringify({ function: 'toggleChat' }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json' },
+          mode: 'no-cors'
         });
-        const data = await response.json();
-        console.log("DEBUG: toggleChat response:", data);
+        console.log("DEBUG: toggleChat response: Request sent (no-cors mode)");
       } catch (error) {
         console.error("DEBUG: Error in toggleChat:", error);
       }
